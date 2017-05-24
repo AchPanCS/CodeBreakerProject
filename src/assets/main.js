@@ -13,6 +13,40 @@ function guess() {
     }
     attempt.value++;
 
+    if (getResults(input.value)){
+      setMessage("You Win! :)");
+      showAnswer(true);
+      showReplay();
+    } else if (attempt.value >= 10) {
+      setMessage("You Lose! :(");
+      showAnswer(false);
+      showReplay();
+    } else {
+      setMessage("Incorrect, try again.");
+    }
+
+}
+
+
+function getResults(input){
+  let html = '<div class="row"><span class="col-md-6">' + input + '</span><div class="col-md-6">'
+  for ( i = 0; i < input.length; i++){
+    if(input.charAt(i) == answer.value.charAt(i)) {
+      html += '<span class="glyphicon glyphicon-ok"></span>';
+      guessCorrect += 1;
+    } else if(answer.value.indexOf(input.charAt(i)) > -1) {
+      html += '<span class="glyphicon glyphicon-transfer"></span>';
+    } else {
+      html += '<span class="glyphicon glyphicon-remove"></span>';
+    }
+  }
+  html += '</div></div>';
+  document.getElementById('results').innerHTML += html;
+
+  if(input == answer.value) {
+    return true;
+  }
+  return false;
 }
 
 function setHiddenFields() {
@@ -27,28 +61,25 @@ function setMessage(message) {
   document.getElementById('message').innerHTML = message;
 }
 
+function showAnswer(success){
+  let code = document.getElementByID('code')
+  if(success){
+    code.className += " success";
+  } else {
+    code.className += " failure";
+  }
+  code.innerHTML = answer.value;
+}
+
+function showReplay(){
+  document.getElementById('guessing-div').style.display = "none";
+  document.getElementById('replay-div').style.display = "block";
+}
+
 function validateInput(input){
   if (input.length != 4){
     setMessage('Guesses must be exactly 4 characters long.');
     return false;
   }
   return true;
-}
-
-function getResults(input){
-  let result = '<div class="row"><span class="col-md-6">' + input + '</span><div class="col-md-6">'
-  for ( i = 0; i < input.length; i++){
-    let temp = '';
-    if(answer.value.includes(input[i])){
-      temp = '<span class="glyphicon glyphicon-transfer"></span>';
-      if(input[i] == answer.value[i]){
-        temp = '<span class="glyphicon glyphicon-ok"></span>';
-      }
-    } else {
-      temp = '<span class="glyphicon glyphicon-remove"></span>';
-    };
-    result.concat(temp);
-  };
-  result.concat('</div>')
-  document.getElementById('results').innerHTML = result;
 }
