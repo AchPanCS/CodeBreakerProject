@@ -7,10 +7,9 @@ function guess() {
 }
 
 function setHiddenFields() {
-  let answer = Math.floor(Math.random() * 1000);
-  answer.toString();
-  while(answer.length < 4) {
-    answer = '0' + answer;
+  answer.value = Math.floor(Math.random() * 10000).toString();
+  while(answer.value.length < 4) {
+    answer.value = '0' + answer.value;
   };
-  let attempt = 0;
+  attempt.value = 0;
 }
